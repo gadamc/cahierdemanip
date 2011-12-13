@@ -50,7 +50,8 @@ def main(*argv):
     print 'connecting to account...'
     try:
         cl = client.DropboxClient(sess)
-        print "linked account:", cl.account_info()
+        info = cl.account_info()
+        print "linked account:", info['display_name'], info['email']
     except:
         print 'authentication failed somehow. delete the file access.txt and try again'
         sys.exit(0)
