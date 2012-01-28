@@ -23,12 +23,14 @@ def main(*argv):
     akey = '5p5o73o3r35uz8g'
     asecret = 'hz7ffxbyqa1pql9'
     atyp = 'dropbox'
+    homedir = os.path.expanduser('~')
+    rcfile = os.path.join(homedir, '.cahierdemanip')
     sess = session.DropboxSession(akey, asecret, atyp)  
 
     access_token = ''
     
-    if os.path.isfile('access.txt'):
-        f = open('access.txt', 'r')
+    if os.path.isfile( rcfile ):
+        f = open( rcfile , 'r')
         access_token = pickle.load(f)
         sess.set_token(access_token.key, access_token.secret)
     else:
@@ -39,12 +41,12 @@ def main(*argv):
         print 'When you are finished, press Return'
         raw_input()
         try:    
-            f = open('access.txt', 'w')
+            f = open(rcfile, 'w')
             access_token = sess.obtain_access_token(reqtok)
             pickle.dump(access_token, f)
         except:
             print "authentication failed, try again."
-            os.remove('access.txt')
+            os.remove(rcfile)
             sys.exit(0)
             
     print 'connecting to account...'
@@ -53,7 +55,7 @@ def main(*argv):
         info = cl.account_info()
         print "linked account:", info['display_name'], info['email']
     except:
-        print 'authentication failed somehow. delete the file access.txt and try again'
+        print 'authentication failed somehow. delete the file %s and try again' % rcfile
         sys.exit(0)
         
     print 'downloading Cahier de Manip to', sendToThisDir    
