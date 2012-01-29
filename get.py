@@ -55,7 +55,8 @@ def main(*argv):
         info = cl.account_info()
         print "linked account:", info['display_name'], info['email']
     except:
-        print 'authentication failed somehow. delete the file %s and try again' % rcfile
+        print "authentication failed, try again."
+        os.remove(rcfile)
         sys.exit(0)
         
     print 'downloading Cahier de Manip to', sendToThisDir    
